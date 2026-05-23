@@ -38,9 +38,121 @@ The architecture diagram is included in this repository.
 
 ---
 
+# Working Application URL
+
+http://udagra-WebAp-w2CLEGJvn2mN-1421474288.us-east-1.elb.amazonaws.com
+
+---
+
 # Installation
 
 Clone the repository:
 
 ```bash
 git clone https://github.com/udacity/-cd12352-Deploy-Infrastructure-as-Code-project.git
+```
+
+---
+
+# Deploy Network Stack
+
+```bash
+aws cloudformation create-stack \
+--stack-name udagram-network \
+--template-body file://starter/network.yml \
+--parameters file://starter/network-parameters.json
+```
+
+---
+
+# Deploy Application Stack
+
+```bash
+aws cloudformation create-stack \
+--stack-name udagram-app \
+--template-body file://starter/udagram.yml \
+--parameters file://starter/udagram-parameters.json \
+--capabilities CAPABILITY_NAMED_IAM
+```
+
+---
+
+# Update Application Stack
+
+```bash
+aws cloudformation update-stack \
+--stack-name udagram-app \
+--template-body file://starter/udagram.yml \
+--parameters file://starter/udagram-parameters.json \
+--capabilities CAPABILITY_NAMED_IAM
+```
+
+---
+
+# Delete Infrastructure
+
+## Delete Application Stack
+
+```bash
+aws cloudformation delete-stack \
+--stack-name udagram-app
+```
+
+## Delete Network Stack
+
+```bash
+aws cloudformation delete-stack \
+--stack-name udagram-network
+```
+
+---
+
+# Automation Scripts
+
+The repository includes automation scripts for:
+
+- Creating network infrastructure
+- Creating application infrastructure
+- Deleting network infrastructure
+- Deleting application infrastructure
+
+Scripts are located inside the `scripts/` folder.
+
+---
+
+# Static Website Content
+
+The EC2 instances download the static website content from the S3 bucket during startup using:
+
+```bash
+aws s3 cp s3://udagram-static-lipsa/index.html /var/www/html/index.html
+```
+
+---
+
+# Project Evidence
+
+The repository includes:
+- CloudFormation stack screenshots
+- Healthy target group screenshot
+- Running application screenshot
+- S3 bucket screenshot
+- Infrastructure diagram
+
+---
+
+# Testing
+
+The deployed application was successfully tested through the Load Balancer URL.
+
+The application displays:
+
+```text
+It works! Udagram, Udacity
+```
+
+---
+
+# License
+
+[License](LICENSE.txt)
